@@ -5,6 +5,7 @@
 #include <numeric>
 #include <ranges>
 
+
 struct ChristmasWish{
     std::string Name;
     int Price;
@@ -83,6 +84,7 @@ int main(){
     int a = largestOfThree(12,34,56);
     float f = largestOfThree(12.11f,34.22f,56.123f);
     std::string l = largestOfThree<std::string>("Stefan","asdasd","234234342");
+    
     std::vector<Movie> greatMovies{
         Movie("The Mummy returns",2022,Movie::MovieType::MovieType_Film,40), // <- begin
         Movie("Fast and Furious 7",2014,Movie::MovieType::MovieType_Film,99),  // <-items
@@ -90,6 +92,67 @@ int main(){
         Movie("Fast & Furious Presents: Hobbs & Shaw",2019,Movie::MovieType::MovieType_Film,88),
        Movie("Young Rock",2021,Movie::MovieType::MovieType_Tv,82),
     };    
+
+
+
+    //HAV  ryms allt möjligt (alla movies)
+    // bäck (stream) leder ut ur HAVET
+    // ryms bara EN movie i taget ut ur bäcken
+    // vi trycker på en knapp för att ta fram nästa ut ur bäcken
+
+    auto result2 = greatMovies | std::views::filter([](const Movie &m){
+        std::cout << "In filter" << std::endl;
+        return m.getPrice() < 90;
+    }) ;
+
+    // result2 är  en knapp som vi kan trycka på för att släppa fram nästa
+    // result2 = iterator
+
+    std::cout << "Hej" << std::endl;
+    for(auto movie: result2){
+        std::cout << movie.getName() << std::endl;
+    }
+
+    // In filter
+    // In filter
+    // In filter
+    // In filter
+    // In filter
+    // Hej
+    // The Mummy returns"
+    // alla andra movies
+
+    int i;
+    i=123;
+
+
+
+    // auto result2 = greatMovies | std::views::filter([](const Movie &m){
+    //     std::cout << "In filter" << std::endl;
+    //     return m.getPrice() < 90;
+    // }) | std::views::transform([](const Movie &m){
+    //        return ChristmasWish(m.getName(), m.getPrice());
+    //  });
+
+    // for(auto wish: result2){
+    //     std::cout << wish.Name << std::endl;
+    // }
+
+
+
+    // std::vector<ChristmasWish> wishes;
+    // for(auto movie: result2){
+    //     wishes.push_back(ChristmasWish(movie.getName(), movie.getPrice()));
+    //     //std::cout << movie.getName() << std::endl;
+    // }
+
+    // for(auto wish: wishes){
+    //     std::cout << wish.Name << std::endl;
+    // }
+
+    
+
+
     
 
     // auto result2 = greatMovies | std::views::filter([](const Movie &m){
@@ -103,34 +166,48 @@ int main(){
     // }
 
 
-
-
-
-    // std::ranges::sort(greatMovies,[](const Movie &item1, const Movie &item2){
+    // std::sort(std::begin(greatMovies),std::end(greatMovies),[](const Movie &item1, const Movie &item2){
     //     return item1.getPrice() < item2.getPrice();        
     // });
 
 
-    std::sort(std::begin(greatMovies),std::end(greatMovies),[](const Movie &item1, const Movie &item2){
+    std::ranges::sort(greatMovies,[](const Movie &item1, const Movie &item2){
         return item1.getPrice() < item2.getPrice();        
     });
+
+
     for(auto &m : greatMovies ){
         std::cout << m.getName() << std::endl;
     }
 
-    // Ta fram och skriv ut alla som kostar mindre än 90 kr
-    auto i = std::begin(greatMovies),end = std::end(greatMovies);
-    while(i != end){
-        i = std::find_if(i,end,[](auto const &m){
-            return m.getPrice() < 90;
-        });
-        // hello
-        if(i != end){
-            std::cout << i->getName() << std::endl;
-            //i = std::next(i);
-            i++;
+
+    // Vi vill skriva ut alla som kostar mindre  än 90 kr
+    for(auto &m : greatMovies ){
+        if(m.getPrice() < 90){
+            std::cout << m.getName() << std::endl;
         }
-    }    
+    }
+
+
+    // i = 0m end = 100
+    // find_if (15,100) hittar en på plats 14
+            // skriver
+    
+
+    // Ta fram och skriv ut alla som kostar mindre än 90 kr
+    // GALET EFFEKTIVT 
+    // auto i = std::begin(greatMovies),end = std::end(greatMovies);
+    // while(i != end){
+    //     i = std::find_if(i,end,[](auto const &m){
+    //         return m.getPrice() < 90;
+    //     });
+    //     // hello
+    //     if(i != end){
+    //         std::cout << i->getName() << std::endl;
+    //         //i = std::next(i);
+    //         i++;
+    //     }
+    // }    
 
 
     // bool any2000 = std::ranges::any_of(greatMovies,[](const Movie &m){
